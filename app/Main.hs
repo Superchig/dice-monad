@@ -10,6 +10,8 @@ import ParDiceExpr
 import PrintDiceExpr
 import System.Exit
 import System.Random
+import System.Random.Stateful
+import System.Random.MWC
 
 type Verbosity = Int
 
@@ -50,6 +52,29 @@ multiRoll qty size rng = (rollResult + preSumResult, rngResult)
     (rollResult, nextRng) = randomR (1, size) rng
     (preSumResult, rngResult) = multiRoll (qty - 1) size nextRng
 
+execM :: StatefulGen g m => Exp -> g -> m Integer
+execM = interpretM
+
+interpretM :: StatefulGen g m => Exp -> g -> m Integer
+interpretM (ERoll (DiceRoll str)) rng = do
+  rolls <- replicateM qty $ uniformRM (1, size :: Integer) rng
+  return $ sum rolls
+  where
+    (Just index) = 'd' `elemIndex` str
+    qty = read $ take index str
+    size = read $ drop (index + 1) str
+interpretM (EModifier n) rng = return n
+interpretM (EPlus exp1 exp2) rng = do
+  result1 <- interpretM exp1 rng
+  result2 <- interpretM exp2 rng
+  return $ result1 + result2
+interpretM (EMinus exp1 exp2) rng = do
+  result1 <- interpretM exp1 rng
+  result2 <- interpretM exp2 rng
+  return $ result1 - result2
+
+-- TODO(Chris): Modify this function to work with either pure or monadic RNG
+-- interfaces
 run :: Verbosity -> ParseFun Exp -> String -> IO ()
 run v p s =
   let ts = myLexer s
@@ -69,8 +94,11 @@ run v p s =
           putStrV v $ show ts
 
           putStrLn "\nOutput:"
-          rng <- getStdGen
-          putStrLn $ printTree $ execPure tree rng
+          -- rng <- getStdGen
+          -- putStrLn $ printTree $ execPure tree rng
+          rng <- createSystemRandom
+          result <- execM tree rng
+          putStrLn $ printTree result
 
           exitSuccess
         Left _ -> exitFailure

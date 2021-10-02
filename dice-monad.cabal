@@ -39,6 +39,7 @@ library
   build-depends:
       array
     , base >=4.7 && <5
+    , mwc-random
     , random
   default-language: Haskell2010
 
@@ -53,6 +54,7 @@ executable dice-monad-exe
       array
     , base >=4.7 && <5
     , dice-monad
+    , mwc-random
     , random
   default-language: Haskell2010
 
@@ -68,5 +70,6 @@ test-suite dice-monad-test
       array
     , base >=4.7 && <5
     , dice-monad
+    , mwc-random
     , random
   default-language: Haskell2010
