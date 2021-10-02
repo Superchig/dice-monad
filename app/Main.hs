@@ -23,7 +23,7 @@ putStrV v s = when (v > 1) $ putStrLn s
 showTree :: (Show a, Print a) => Int -> a -> IO ()
 showTree v tree =
   do
-    putStrV v $ "\n[Abstract Syntax]\n\n" ++ show tree
+    putStrV v $ "\nAbstract Syntax:\n" ++ show tree
 
 execPure :: RandomGen g => Exp -> g -> Integer
 execPure p rng = fst $ interpretPure p rng
@@ -86,12 +86,16 @@ run v p s =
           putStrLn "\nTokens:"
           putStrV v $ show ts
 
-          putStrLn "\nOutput:"
+          putStrLn "\nResult Tree:"
           -- rng <- getStdGen
           -- putStrLn $ printTree $ execPure tree rng
           rng <- createSystemRandom
-          result <- execM tree rng
-          putStrLn $ printTree result
+          result <- evalExpM tree rng
+          -- putStrLn $ printTree result
+          print result
+
+          putStrLn "\nTotal:"
+          print $ collapse result
 
           exitSuccess
         Left _ -> exitFailure
