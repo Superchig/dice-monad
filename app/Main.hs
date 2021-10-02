@@ -23,24 +23,24 @@ showTree v tree =
   do
     putStrV v $ "\n[Abstract Syntax]\n\n" ++ show tree
 
-execCBN :: RandomGen g => Program -> g -> Integer
-execCBN (Prog p) rng = fst $ interpret p rng
+execPure :: RandomGen g => Program -> g -> Integer
+execPure (Prog p) rng = fst $ interpretPure p rng
 
-interpret :: RandomGen g => Exp -> g -> (Integer, g)
-interpret (ERoll (DiceRoll str)) rng = multiRoll qty size rng
+interpretPure :: RandomGen g => Exp -> g -> (Integer, g)
+interpretPure (ERoll (DiceRoll str)) rng = multiRoll qty size rng
   where
     (Just index) = 'd' `elemIndex` str
     qty = read $ take index str
     size = read $ drop (index + 1) str
-interpret (EModifier n) rng = (n, rng)
-interpret (EMinus exp1 exp2) rng = (result1 - result2, rng)
+interpretPure (EModifier n) rng = (n, rng)
+interpretPure (EMinus exp1 exp2) rng = (result1 - result2, rng)
   where
-    (result1, rng1) = interpret exp1 rng
-    (result2, rng2) = interpret exp2 rng1
-interpret (EPlus exp1 exp2) rng = (result1 + result2, rng2)
+    (result1, rng1) = interpretPure exp1 rng
+    (result2, rng2) = interpretPure exp2 rng1
+interpretPure (EPlus exp1 exp2) rng = (result1 + result2, rng2)
   where
-    (result1, rng1) = interpret exp1 rng
-    (result2, rng2) = interpret exp2 rng1
+    (result1, rng1) = interpretPure exp1 rng
+    (result2, rng2) = interpretPure exp2 rng1
 
 -- Rolls a die of a given size 1 or more times, summing the results
 multiRoll :: RandomGen g => Integer -> Integer -> g -> (Integer, g)
@@ -70,7 +70,7 @@ run v p s =
 
           putStrLn "\nOutput:"
           rng <- getStdGen
-          putStrLn $ printTree $ execCBN tree rng
+          putStrLn $ printTree $ execPure tree rng
 
           exitSuccess
         Left _ -> exitFailure
