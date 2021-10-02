@@ -23,8 +23,8 @@ showTree v tree =
   do
     putStrV v $ "\n[Abstract Syntax]\n\n" ++ show tree
 
-execPure :: RandomGen g => Program -> g -> Integer
-execPure (Prog p) rng = fst $ interpretPure p rng
+execPure :: RandomGen g => Exp -> g -> Integer
+execPure p rng = fst $ interpretPure p rng
 
 interpretPure :: RandomGen g => Exp -> g -> (Integer, g)
 interpretPure (ERoll (DiceRoll str)) rng = multiRoll qty size rng
@@ -50,7 +50,7 @@ multiRoll qty size rng = (rollResult + preSumResult, rngResult)
     (rollResult, nextRng) = randomR (1, size) rng
     (preSumResult, rngResult) = multiRoll (qty - 1) size nextRng
 
-run :: Verbosity -> ParseFun Program -> String -> IO ()
+run :: Verbosity -> ParseFun Exp -> String -> IO ()
 run v p s =
   let ts = myLexer s
    in case p ts of
@@ -79,4 +79,4 @@ run v p s =
 main :: IO ()
 main = do
   input <- getLine
-  run 2 pProgram input
+  run 2 pExp input
