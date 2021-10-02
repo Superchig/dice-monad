@@ -1,0 +1,10 @@
+Prog.  		Program ::= Exp ;
+ERoll. 		Exp ::= DiceRoll ;
+EModifier.  	Exp ::= Integer ;
+EPlus.		Exp ::= Exp "+" Exp ;
+
+-- coercions Exp 1 ;
+
+token DiceRoll (digit+ 'd' digit+) ;  -- Ex: 1d20, 8d6
+
+comment "//" ; 
