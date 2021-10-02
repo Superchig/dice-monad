@@ -10,8 +10,8 @@ import ParDiceExpr
 import PrintDiceExpr
 import System.Exit
 import System.Random
-import System.Random.Stateful
 import System.Random.MWC
+import System.Random.Stateful
 
 type Verbosity = Int
 
