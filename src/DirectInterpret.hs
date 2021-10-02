@@ -1,5 +1,11 @@
 module DirectInterpret where
 
+-- The exec functions directly interpret an Exp into an Integer, without storing
+-- intermediate roll results in their own tree.
+-- Functions ending with "Pure" use the pure random number generation API from
+-- the random-1.2.0 package, while functions ending with "M" use the monadic
+-- random number generation API.
+
 import AbsDiceExpr
 import Control.Monad
 import Data.List
@@ -32,6 +38,9 @@ multiRoll qty size rng = (rollResult + preSumResult, rngResult)
     (rollResult, nextRng) = randomR (1, size) rng
     (preSumResult, rngResult) = multiRoll (qty - 1) size nextRng
 
+-- Because the monadic random number generation API allows us to avoid
+-- perpetually returning a new random number generator, execM is actually
+-- equivalent to interpretM
 execM :: StatefulGen g m => Exp -> g -> m Integer
 execM = interpretM
 
