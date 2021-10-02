@@ -23,17 +23,28 @@ showTree v tree =
   do
     putStrV v $ "\n[Abstract Syntax]\n\n" ++ show tree
 
-execCBN :: Program -> Integer
-execCBN (Prog p) = interpret p
+execCBN :: RandomGen g => Program -> g -> Integer
+execCBN (Prog p) rng = fst $ interpret p rng
 
-interpret :: Exp -> Integer
-interpret (ERoll (DiceRoll str)) = qty + size
+interpret :: RandomGen g => Exp -> g -> (Integer, g)
+interpret (ERoll (DiceRoll str)) rng = multiRoll qty size rng
   where
     (Just index) = 'd' `elemIndex` str
     qty = read $ take index str
     size = read $ drop (index + 1) str
-interpret (EModifier n) = n
-interpret (EPlus exp1 exp2) = interpret exp1 + interpret exp2
+interpret (EModifier n) rng = (n, rng)
+interpret (EPlus exp1 exp2) rng = (result1 + result2, rng2)
+  where
+    (result1, rng1) = interpret exp1 rng
+    (result2, rng2) = interpret exp2 rng1
+
+-- Rolls a die of a given size 1 or more times, summing the results
+multiRoll :: RandomGen g => Integer -> Integer -> g -> (Integer, g)
+multiRoll 1 size rng = randomR (1, size) rng
+multiRoll qty size rng = (rollResult + preSumResult, rngResult)
+  where
+    (rollResult, nextRng) = randomR (1, size) rng
+    (preSumResult, rngResult) = multiRoll (qty - 1) size nextRng
 
 run :: Verbosity -> ParseFun Program -> String -> IO ()
 run v p s =
@@ -54,19 +65,12 @@ run v p s =
           putStrV v $ show ts
 
           putStrLn "\nOutput:"
-          putStrLn $ printTree $ execCBN tree
+          rng <- getStdGen
+          putStrLn $ printTree $ execCBN tree rng
 
           exitSuccess
         Left _ -> exitFailure
         Right _ -> exitFailure
-
--- https://www.schoolofhaskell.com/school/starting-with-haskell/libraries-and-frameworks/randoms
--- main :: IO ()
--- main = do
---   g <- getStdGen
---   -- print $ take 10 (randoms g :: [Double])
---   let res = randomR (1, 20) g :: (Integer, StdGen)
---   print $ fst res
 
 main :: IO ()
 main = do
