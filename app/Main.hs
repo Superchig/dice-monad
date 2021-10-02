@@ -56,22 +56,15 @@ execM :: StatefulGen g m => Exp -> g -> m Integer
 execM = interpretM
 
 interpretM :: StatefulGen g m => Exp -> g -> m Integer
-interpretM (ERoll (DiceRoll str)) rng = do
-  rolls <- replicateM qty $ uniformRM (1, size :: Integer) rng
-  return $ sum rolls
+interpretM (ERoll (DiceRoll str)) rng = sum <$> replicateM qty (uniformRM (1, size) rng)
   where
     (Just index) = 'd' `elemIndex` str
     qty = read $ take index str
     size = read $ drop (index + 1) str
 interpretM (EModifier n) rng = return n
-interpretM (EPlus exp1 exp2) rng = do
-  result1 <- interpretM exp1 rng
-  result2 <- interpretM exp2 rng
-  return $ result1 + result2
-interpretM (EMinus exp1 exp2) rng = do
-  result1 <- interpretM exp1 rng
-  result2 <- interpretM exp2 rng
-  return $ result1 - result2
+-- We could also use liftA2 from Control.Applicative
+interpretM (EPlus exp1 exp2) rng = (+) <$> interpretM exp1 rng <*> interpretM exp2 rng
+interpretM (EMinus exp1 exp2) rng = (-) <$> interpretM exp1 rng <*> interpretM exp2 rng
 
 -- TODO(Chris): Modify this function to work with either pure or monadic RNG
 -- interfaces
