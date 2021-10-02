@@ -1,9 +1,9 @@
 Prog.  		Program ::= Exp ;
-ERoll. 		Exp ::= DiceRoll ;
-EModifier.  	Exp ::= Integer ;
-EPlus.		Exp ::= Exp "+" Exp ;
+EPlus.		Exp ::= Exp "+" Exp1 ;
+ERoll. 		Exp1 ::= DiceRoll ;
+EModifier.  	Exp1 ::= Integer ;
 
--- coercions Exp 1 ;
+coercions Exp 1 ;
 
 token DiceRoll (digit+ 'd' digit+) ;  -- Ex: 1d20, 8d6
 
