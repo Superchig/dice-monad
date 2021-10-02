@@ -33,6 +33,10 @@ interpret (ERoll (DiceRoll str)) rng = multiRoll qty size rng
     qty = read $ take index str
     size = read $ drop (index + 1) str
 interpret (EModifier n) rng = (n, rng)
+interpret (EMinus exp1 exp2) rng = (result1 - result2, rng)
+  where
+    (result1, rng1) = interpret exp1 rng
+    (result2, rng2) = interpret exp2 rng1
 interpret (EPlus exp1 exp2) rng = (result1 + result2, rng2)
   where
     (result1, rng1) = interpret exp1 rng
