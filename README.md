@@ -28,3 +28,4 @@ These may never get done, but it'd sure be nice if they were implemented.
   evaluation of Dice Expressions
 - [ ] Write [some sort of GUI](https://github.com/fjvallarino/monomer) so that
   the project is actually usable
+- [ ] Call bnfc from Setup.hs, rather than layering a Makefile on top of stack
