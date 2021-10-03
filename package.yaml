@@ -1,10 +1,10 @@
 name:                dice-monad
 version:             0.1.0.0
-github:              "githubuser/dice-monad"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
+github:              "superchig/dice-monad"
+license:             GPLv3
+author:              "Christopher Chang"
+maintainer:          "chiggiechang@gmail.com"
+copyright:           "2021 Christopher Chang"
 
 extra-source-files:
 - README.md
