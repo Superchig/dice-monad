@@ -6,6 +6,9 @@ For example, `1d20+5` would mean roll a 20-sided die and add 5 to it.
 
 ## Build Requirements
 - stack 
+- bnfc
+- happy
+- alex
 - make
 - grep
 - awk
