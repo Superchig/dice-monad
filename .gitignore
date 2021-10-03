@@ -22,3 +22,5 @@ src/TestDiceExpr.hs
 src/TestDiceExpr
 
 *.bak
+
+dice-monad-exe
