@@ -12,7 +12,7 @@ grammar/Makefile:
 dice-monad-exe: src/Lib.hs src/DirectInterpret.hs app/Main.hs grammar/TestDiceExpr grammar/Makefile
 	stack build
 
-	cp "$$(stack path | grep local-install-root | awk '{print $$2}')/bin/dice-monad-exe" .
+	ln -sf "$$(stack path | grep local-install-root | awk '{print $$2}')/bin/dice-monad-exe" .
 
 clean:
 	rm -f grammar/*.{hs,o,hi.txt,x,y} grammar/{Makefile,TestDiceExpr}
