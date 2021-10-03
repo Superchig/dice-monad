@@ -25,7 +25,7 @@ and then run the executable dice-monad-exe with
 These may never get done, but it'd sure be nice if they were implemented.
 
 - [ ] Write [unit tests](https://hackage.haskell.org/package/HUnit) for the
-  evaluation of Dice Expressions
+  evaluation of dice expressions
 - [ ] Write [some sort of GUI](https://github.com/fjvallarino/monomer) so that
   the project is actually usable
 - [ ] Call bnfc from Setup.hs, rather than layering a Makefile on top of stack
