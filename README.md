@@ -2,7 +2,8 @@
 
 This parses and rolls "dice expressions," as in Dungeons and Dragons.
 
-For example, `1d20+5` would mean roll a 20-sided die and add 5 to it.
+For example, `1d20+5` would mean roll a 20-sided die and add 5 to it. And
+`10d6+40` would mean roll 10 6-sided dice and add 40 to the result.
 
 ## Build Requirements
 - stack 
@@ -20,7 +21,7 @@ make
 ```
 and then run the executable dice-monad-exe with
 ```bash
-./dice-monad-exe
+echo "1d20+5" | ./dice-monad-exe
 ```
 
 ## TODO
