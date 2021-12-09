@@ -12,7 +12,7 @@ bug-reports:    https://github.com/superchig/dice-monad/issues
 author:         Christopher Chang
 maintainer:     chiggiechang@gmail.com
 copyright:      2021 Christopher Chang
-license:        GPLv3
+license:        GPL-3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:

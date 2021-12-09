@@ -1,7 +1,7 @@
 name:                dice-monad
 version:             0.1.0.0
 github:              "superchig/dice-monad"
-license:             GPLv3
+license:             GPL-3
 author:              "Christopher Chang"
 maintainer:          "chiggiechang@gmail.com"
 copyright:           "2021 Christopher Chang"
