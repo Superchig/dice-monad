@@ -1,6 +1,8 @@
 # dice-monad
 
-This parses and rolls "dice expressions," as in Dungeons and Dragons.
+This parses [dice notation](https://en.wikipedia.org/wiki/Dice_notation), as
+commonly used in games like Dungeons and Dragons, and
+simulates dice rolls accordingly.
 
 For example, `1d20+5` would mean roll a 20-sided die and add 5 to it. And
 `10d6+40` would mean roll 10 6-sided dice and add 40 to the result.
